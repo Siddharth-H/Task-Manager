@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/Siddharth-H/Task-Manager#readme",
   "dependencies": {
-    "mongodb": "^3.6.0"
+    "mongodb": "^3.6.0",
+    "mongoose": "^5.9.28",
+    "validator": "^13.1.1"
   }
 }
