@@ -5,29 +5,16 @@ const validator = require('validator')
 mongoose.connect('mongodb://127.0.0.1:27017/task-manager-api', {
     useNewUrlParser: true,
     useCreateIndex: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify: false
 })
 
-// const me = new User({
-//     name: ' Mark',
-//     email: 'mark@gmail.com',
-//     password: 'abc123'
+// const task = new Task({
+//     description: 'Complete Mongoose'
 // })
 
-// me.save().then(()=>{
-//     console.log(me)
-// }).catch((error)=>{
-//     console.log('Error!, ',error);
+// task.save().then(() => {
+//     console.log(task)
+// }).catch((error) => {
+//     console.log('Error!', error)
 // })
-
-
-
-const task = new Task({
-    description: 'Complete Mongoose'
-})
-
-task.save().then(() => {
-    console.log(task)
-}).catch((error) => {
-    console.log('Error!', error)
-})
