@@ -5,6 +5,7 @@ const Task = require('../models/task')
 router.post('/tasks', async (req, res) => {
     try{
         const task = await new Task(req.body)
+        await task.save()
         res.send(task)
     }catch (e){
         res.status(400).send(e)
@@ -15,11 +16,11 @@ router.post('/tasks', async (req, res) => {
 router.get('/tasks', async (req, res) =>{
     try{
         const tasks = await Task.find({})
-        // res.send(tasks)
-        console.log(tasks)
+        res.send(tasks)
+        // console.log(tasks)
     }catch(e){
-        // res.status(500).send(e)
-        console.log(e);
+        res.status(500).send(e)
+        // console.log(e);
     }
 })
 
