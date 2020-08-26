@@ -17,10 +17,21 @@ router.post('/users', async (req, res) =>{
 router.post('/users/login', async (req, res) =>{
     try{
         const user = await User.findByCredentials(req.body.email, req.body.password)
-        res.send(user)
-        console.log("after lg",user);
+        const token = await user.generateAuthToken()
+        res.send({user, token})
     }catch(e){
-        console.log(e);
+        res.status(500).send(e)
+    }
+})
+
+router.post('/users/signup', async (req, res) => {
+    try{
+        const user = await new User(req.body)
+        const token = await user.generateAuthToken()
+        await user.save()
+        res.send({user, token})
+
+    }catch(e){
         res.status(500).send(e)
     }
 })
