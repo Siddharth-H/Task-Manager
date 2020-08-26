@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
+const bcrypt = require('bcryptjs')
 
 mongoose.connect('mongodb://127.0.0.1:27017/task-manager-api', {
     useNewUrlParser: true,
@@ -7,7 +8,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/task-manager-api', {
     useUnifiedTopology: true
 })
 
-const User = mongoose.model('User', {
+const userSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -16,6 +17,7 @@ const User = mongoose.model('User', {
     email: {
         type: String,
         required: true,
+        unique: true,
         trim: true,
         lowercase: true,
         validate(value){
@@ -45,5 +47,25 @@ const User = mongoose.model('User', {
         }
     }
 })
+
+userSchema.statics.findByCredentials = async(email, password)  =>{
+    const user = await User.findOne({ email })
+    if(!user) throw new Error('Unable to Login')
+    const isMatch = await bcrypt.compare(password, user.password)
+    console.log("isMatch = ",isMatch);
+    if(!isMatch) throw new Error('Incorrect password')
+    return user
+}
+
+userSchema.pre('save', async function(next) {
+    const user = this
+
+    if(user.isModified('password')) {
+        user.password = await bcrypt.hash(user.password, 8)
+    }
+    console.log(user);
+    next()
+})
+const User = mongoose.model('User', userSchema)
 
 module.exports = User

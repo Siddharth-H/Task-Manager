@@ -7,7 +7,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/task-manager-api', {
     useUnifiedTopology: true
 })
 
-const Task = mongoose.model('Task', {
+const taskSchema = mongoose.Schema({
     description: {
         type: String,
         required: true,
@@ -20,5 +20,13 @@ const Task = mongoose.model('Task', {
 
     }
 })
+
+// taskSchema.pre('save', async function(next){
+//     const task = this
+//     if(task.isModified()){
+//         task.
+//     }
+// })
+const Task = mongoose.model('Task', taskSchema)
 
 module.exports = Task
